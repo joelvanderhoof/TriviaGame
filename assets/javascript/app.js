@@ -33,20 +33,22 @@ var playerGuess;
 var timeRemaining;
 var guessedWrong = 0;
 var guessedRight = 0;
+var counter = 0;
 
 
 //Declare functions
 
-// //Show the question and choices
-// function showQuestion () {
-// 	$(".question").html("<h2>" + questions[i].question + "</h2>");
-// 	$(".choice").attr("val", 0).html("<p>" + questions[i].question[0] + "</p>");
-// 	$(".choice").attr("val", 1).html("<p>" + questions[i].question[1] + "</p>");
-// 	$(".choice").attr("val", 2).html("<p>" + questions[i].question[2] + "</p>");
-// 	$(".choice").attr("val", 3).html("<p>" + questions[i].question[3] + "</p>");
-// 	$(".choice").attr("val", 4).html("<p>" + questions[i].question[4] + "</p>");
-// 	$(".answer").html("<p>" + questions[i].answer + "</p>");
-// }
+//Show the question and choices
+function showQuestion () {
+
+	$("#question").html("<h2>" + questions[counter].question + "</h2>");
+	$("div[value = '0']").html(questions[counter].choices[0]);
+	$("div[value = '1']").html(questions[counter].choices[1]);
+	$("div[value = '2']").html(questions[counter].choices[2]);
+	$("div[value = '3']").html(questions[counter].choices[3]);
+	$("div[value = '4']").html(questions[counter].choices[4]);
+	$(".answer").html("<p>" + questions[counter].answer + "</p>");
+}
 
 // //Show the next question
 // function showNextQuestion() {
@@ -96,22 +98,20 @@ var guessedRight = 0;
 // 		//After a few seconds, display the next question -- do this without user input.
 // 	}
 
-for (i=0; i<questions.length; i++) {
-	$("#question").html("<h2>" + questions[i].question + "</h2>");
-	$("div[value = '0']").html("<p>" + questions[i].choices[0] + "</p>");
-	$("div[value = '1']").html("<p>" + questions[i].choices[1] + "</p>");
-	$("div[value = '2']").html("<p>" + questions[i].choices[2] + "</p>");
-	$("div[value = '3']").html("<p>" + questions[i].choices[3] + "</p>");
-	$("div[value = '4']").html("<p>" + questions[i].choices[4] + "</p>");
-	$(".answer").html("<p>" + questions[i].answer + "</p>");
+//show the first question
+showQuestion();
 
-	$(".question").on("click", function() {
+//when the user clicks a choice, +1 to counter
+$(".choice").on("click", function() {
+	
+//check the answer
+	
 		console.log(this);
-		playerGuess = this;
-	});
-	if (playerGuess === questions[i].answer) {
+		playerGuess = $(this).html();
+	
+	if (playerGuess === questions[counter].answer) {
 		//show a screen congratulating them for choosing the right option. 
-		console.log("right!");
+		console.log("right!" + questions[counter].answer);
 		guessedRight++;
 		//After a few seconds, display the next question -- do this without user input.
 
@@ -126,7 +126,15 @@ for (i=0; i<questions.length; i++) {
 
 		//After a few seconds, display the next question -- do this without user input.
 	}
-	};
+	counter++;
+	console.log("guessed right: " + guessedRight);
+	console.log("guessed wrong: " + guessedWrong);
+	if (counter >= questions.length) {
+		alert("You won!!! New game?");
+		counter = 0;
+	}
+		showQuestion();
+	});
 
 
 
